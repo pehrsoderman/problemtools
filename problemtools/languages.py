@@ -82,7 +82,7 @@ class Language(object):
                         'Language %s: priority must be integer but is %s.'
                         % (self.lang_id, type(value)))
             else:
-                if type(value) != bytes:
+                if type(value) != str:
                     raise LanguageConfigError(
                         'Language %s: %s must be string but is %s.'
                         % (self.lang_id, key, type(value)))
