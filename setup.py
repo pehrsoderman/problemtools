@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from setuptools import setup, find_packages
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
