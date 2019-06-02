@@ -215,7 +215,7 @@ class Languages(object):
                 % (type(data)))
 
         for (lang_id, lang_spec) in data.items():
-            if type(lang_id) is not bytes:
+            if type(lang_id) is not str:
                 raise LanguageConfigError(
                     'Config file error: language IDs must be strings, but %s is %s.'
                     % (lang_id, type(lang_id)))

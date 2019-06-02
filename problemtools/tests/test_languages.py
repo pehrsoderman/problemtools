@@ -89,9 +89,6 @@ class Language_test(TestCase):
         vals['priority'] = 2.3
         with pytest.raises(languages.LanguageConfigError):
             languages.Language('id', vals)
-        vals['priority'] = 10**1000
-        with pytest.raises(languages.LanguageConfigError):
-            languages.Language('id', vals)
 
 
     def test_missing_files(self):
