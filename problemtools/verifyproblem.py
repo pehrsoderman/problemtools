@@ -1,6 +1,6 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+
 import glob
 import string
 import hashlib
@@ -17,12 +17,12 @@ import copy
 import random
 from argparse import ArgumentParser, ArgumentTypeError
 
-import problem2pdf
-import problem2html
+from . import problem2pdf
+from . import problem2html
 
-import config
-import languages
-import run
+from . import config
+from . import languages
+from . import run
 
 
 def is_TLE(status, may_signal_with_usr1=False):
@@ -292,7 +292,7 @@ class TestCaseGroup(ProblemAspect):
 
         # For non-root groups, missing properties are inherited from the parent group
         if parent:
-            for field, parent_value in parent.config.iteritems():
+            for field, parent_value in parent.config.items():
                 if not field in self.config:
                     self.config[field] = parent_value
 
@@ -313,7 +313,7 @@ class TestCaseGroup(ProblemAspect):
                 if key not in self.config:
                     self.config[key] = None
 
-        for field, default in TestCaseGroup._DEFAULT_CONFIG.iteritems():
+        for field, default in TestCaseGroup._DEFAULT_CONFIG.items():
             if field not in self.config:
                 self.config[field] = default
 
@@ -366,7 +366,7 @@ class TestCaseGroup(ProblemAspect):
     def get_score_range(self):
         try:
             score_range = self.config['range']
-            (min_score, max_score) = map(float, score_range.split())
+            (min_score, max_score) = list(map(float, score_range.split()))
             return (min_score, max_score)
         except:
             return (-float('inf'), float('inf'))
@@ -385,8 +385,8 @@ class TestCaseGroup(ProblemAspect):
         if self.config['grading'] == 'default' and Graders._default_grader is None:
             self._problem.graders.error('%s has default grading but I could not find default grader' % self)
 
-        for field in self.config.keys():
-            if field not in TestCaseGroup._DEFAULT_CONFIG.keys():
+        for field in list(self.config.keys()):
+            if field not in list(TestCaseGroup._DEFAULT_CONFIG.keys()):
                 self.warning("Unknown key '%s' in '%s'" % (field, os.path.join(self._datadir, 'testdata.yaml')))
 
         if not self._problem.is_scoring:
@@ -401,7 +401,7 @@ class TestCaseGroup(ProblemAspect):
             # Check grading
             try:
                 score_range = self.config['range']
-                (min_score, max_score) = map(float, score_range.split())
+                (min_score, max_score) = list(map(float, score_range.split()))
                 if min_score > max_score:
                     self.error("Invalid score range '%s': minimum score cannot be greater than maximum score" % score_range)
             except VerifyError:
@@ -440,7 +440,7 @@ class TestCaseGroup(ProblemAspect):
                                 md5.update(buf)
                         filehash = md5.digest()
                         hashes[filehash].append(os.path.relpath(filepath, self._problem.probdir))
-            for _, files in hashes.iteritems():
+            for _, files in hashes.items():
                 if len(files) > 1:
                     self.warning("Identical input files: '%s'" % str(files))
 
@@ -587,11 +587,11 @@ class ProblemConfig(ProblemAspect):
         if 'name' in self._data and not type(self._data['name']) is dict:
             self._data['name'] = {'': self._data['name']}
 
-        for field, default in copy.deepcopy(ProblemConfig._OPTIONAL_CONFIG).iteritems():
+        for field, default in copy.deepcopy(ProblemConfig._OPTIONAL_CONFIG).items():
             if not field in self._data:
                 self._data[field] = default
             elif type(default) is dict and type(self._data[field]) is dict:
-                self._data[field] = dict(default.items() + self._data[field].items())
+                self._data[field] = dict(list(default.items()) + list(self._data[field].items()))
 
         self._origdata = copy.deepcopy(self._data)
 
@@ -626,8 +626,8 @@ class ProblemConfig(ProblemAspect):
             if not field in self._data:
                 self.error("Mandatory field '%s' not provided" % field)
 
-        for field, value in self._origdata.iteritems():
-            if field not in ProblemConfig._OPTIONAL_CONFIG.keys() and field not in ProblemConfig._MANDATORY_CONFIG:
+        for field, value in self._origdata.items():
+            if field not in list(ProblemConfig._OPTIONAL_CONFIG.keys()) and field not in ProblemConfig._MANDATORY_CONFIG:
                 self.warning("Unknown field '%s' provided in problem.yaml" % field)
             if value is None:
                 self.error("Field '%s' provided in problem.yaml but is empty" % field)

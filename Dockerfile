@@ -14,10 +14,9 @@ RUN apt-get update && \
             libgmp10 \
             libgmpxx4ldbl \
             openjdk-8-jdk \
-            python-minimal \
-            python-pip \
-            python-plastex \
-            python-yaml \
+            python3-minimal \
+            python3-pip \
+            python3-yaml \
             sudo \
             texlive-fonts-recommended \
             texlive-lang-cyrillic \

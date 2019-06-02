@@ -8,7 +8,7 @@ import string
 from string import Template
 from optparse import OptionParser
 import logging
-import template
+from . import template
 
 
 def convert(problem, options=None):
@@ -77,10 +77,10 @@ class ConvertOptions:
 def main():
     options = ConvertOptions()
     optparse = OptionParser(usage="usage: %prog [options] problem")
-    for (dest, action, short, long, help) in ConvertOptions.available:
+    for (dest, action, short, int, help) in ConvertOptions.available:
         if (action == 'store'):
             help += ' default: "%s"' % options.__dict__[dest]
-        optparse.add_option(short, long, dest=dest, help=help, action=action)
+        optparse.add_option(short, int, dest=dest, help=help, action=action)
 
     (options, args) = optparse.parse_args(values=options)
 

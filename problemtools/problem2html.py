@@ -1,18 +1,18 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+
 import re
 import os.path
 import sys
 import string
 from string import Template
 from optparse import OptionParser
-from ProblemPlasTeX import ProblemRenderer
-from ProblemPlasTeX import ProblemsetMacros
+from .ProblemPlasTeX import ProblemRenderer
+from .ProblemPlasTeX import ProblemsetMacros
 from plasTeX.TeX import TeX
 from plasTeX.Logging import getLogger, disableLogging
 import logging
-import template
+from . import template
 
 
 def convert(problem, options=None):
@@ -134,10 +134,10 @@ class ConvertOptions:
 def main():
     options = ConvertOptions()
     optparse = OptionParser(usage="usage: %prog [options] problem")
-    for (dest, action, short, long, help) in ConvertOptions.available:
+    for (dest, action, short, int, help) in ConvertOptions.available:
         if (action == 'store'):
             help += ' default: "%s"' % options.__dict__[dest]
-        optparse.add_option(short, long, dest=dest, help=help, action=action)
+        optparse.add_option(short, int, dest=dest, help=help, action=action)
 
     (options, args) = optparse.parse_args(values=options)
 

@@ -196,14 +196,18 @@ problemtools' configuration:
 
 ## Requirements and compatibility
 
-To build and run the tools, you need Python 2 with the YAML and PlasTeX libraries,
+To build and run the tools, you need Python 3 with the YAML and PlasTeX libraries,
 and a LaTeX installation.
 
 ### Ubuntu
 
 The dependencies needed to *build/install* problemtools can be installed with:
 
-    sudo apt install automake g++ make libboost-regex-dev libgmp-dev libgmp10 libgmpxx4ldbl python python-pytest python-setuptools python-yaml
+    sudo apt install automake g++ make libboost-regex-dev libgmp-dev libgmp10 libgmpxx4ldbl python3 python3-pytest python3-setuptools python3-yaml
+
+Followed by:
+
+    pip3 install --user plastex
 
 And the dependencies needed to *run* problemtools can be installed with:
 
@@ -213,11 +217,11 @@ And the dependencies needed to *run* problemtools can be installed with:
 
 On Fedora, these dependencies can be installed with:
 
-    sudo dnf install boost-regex gcc gmp-devel gmp-c++ python2 python2-pyyaml texlive-latex texlive-collection-fontsrecommended texlive-fancyhdr texlive-subfigure texlive-wrapfig texlive-import texlive-ulem texlive-xifthen texlive-overpic texlive-pbox tidy ghostscript
+    sudo dnf install boost-regex gcc gmp-devel gmp-c++ python3 python3-pyyaml texlive-latex texlive-collection-fontsrecommended texlive-fancyhdr texlive-subfigure texlive-wrapfig texlive-import texlive-ulem texlive-xifthen texlive-overpic texlive-pbox tidy ghostscript
 
 Followed by:
 
-    pip2 install --user plastex
+    pip3 install --user plastex
 
 ### Other platforms
 

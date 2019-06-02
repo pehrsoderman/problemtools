@@ -1,5 +1,5 @@
 import plasTeX.Packages.graphics as graphics
-from ProblemsetMacros import _graphics_command, clean_width
+from .ProblemsetMacros import _graphics_command, clean_width
 
 # Reimplementation of graphicx package because plasTeX is broken and
 # annoying.
