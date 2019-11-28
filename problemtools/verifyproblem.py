@@ -24,6 +24,7 @@ import sys
 import copy
 import random
 from argparse import ArgumentParser, ArgumentTypeError
+from makebytes import b
 
 from . import problem2pdf
 from . import problem2html
@@ -904,9 +905,8 @@ class InputFormatValidators(ProblemAspect):
             fd, file_name = tempfile.mkstemp()
             os.close(fd)
             for (desc, case) in _JUNK_CASES:
-                f = open(file_name, "wb")
-                f.write(case)
-                f.close()
+                with open(file_name, "wb") as f:
+                    f.write(b(case))
                 for flags in all_flags:
                     flags = flags.split()
                     for val in self._validators:
@@ -924,7 +924,7 @@ class InputFormatValidators(ProblemAspect):
                         continue
 
                     with open(file_name, "wb") as f:
-                        f.write(modifier(infile))
+                        f.write(b(modifier(infile)))
 
                     for flags in all_flags:
                         flags = flags.split()
@@ -1096,9 +1096,8 @@ class OutputValidators(ProblemAspect):
             fd, file_name = tempfile.mkstemp()
             os.close(fd)
             for (desc, case) in _JUNK_CASES:
-                f = open(file_name, "wb")
-                f.write(case)
-                f.close()
+                with open(file_name, "wb") as f:
+                    f.write(b(case))
                 rejected = False
                 for testcase in self._problem.testdata.get_all_testcases():
                     result = self.validate(testcase, file_name)
