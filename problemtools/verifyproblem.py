@@ -308,7 +308,8 @@ class TestCaseGroup(ProblemAspect):
         configfile = os.path.join(self._datadir, 'testdata.yaml')
         if os.path.isfile(configfile):
             try:
-                self.config = yaml.safe_load(file(configfile))
+                with open(configfile) as config_file:
+                    self.config = yaml.safe_load(config_file)
             except Exception as e:
                 self.error(e)
                 self.config = {}
@@ -600,10 +601,11 @@ class ProblemConfig(ProblemAspect):
 
         if os.path.isfile(self.configfile):
             try:
-                self._data = yaml.safe_load(file(self.configfile))
-                # Loading empty yaml yields None, for no apparent reason...
-                if self._data is None:
-                    self._data = {}
+                with open(self.configfile) as config_file:
+                    self._data = yaml.safe_load(config_file)
+                    # Loading empty yaml yields None, for no apparent reason...
+                    if self._data is None:
+                        self._data = {}
             except Exception as e:
                 self.error(e)
 
