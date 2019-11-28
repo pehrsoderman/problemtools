@@ -82,7 +82,8 @@ setup(name='problemtools',
       install_requires=[
           'PyYAML',
           'plasTeX<=1.0;python_version<"3"',
-          'plasTeX>=2.0;python_version>="3"'
+          'plasTeX>=2.0;python_version>="3"',
+          'future'
       ],
 #      Temporarily disabled, see setup.cfg
 #      For now tests can be run manually with pytest

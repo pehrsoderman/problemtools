@@ -1,3 +1,4 @@
+from builtins import next
 import os
 from .executable import Executable
 

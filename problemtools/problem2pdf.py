@@ -1,5 +1,6 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
+from builtins import object
 import re
 import os.path
 import shutil
@@ -53,7 +54,7 @@ def convert(problem, options=None):
     return status == 0
 
 
-class ConvertOptions:
+class ConvertOptions(object):
     available = [
         ['destfile', 'store', '-o', '--output',
          "output file name."],

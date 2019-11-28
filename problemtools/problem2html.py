@@ -1,6 +1,7 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from builtins import object
 import re
 import os.path
 import sys
@@ -99,7 +100,7 @@ def convert(problem, options=None):
     return True
 
 
-class ConvertOptions:
+class ConvertOptions(object):
     available = [
         ['bodyonly', 'store_true', '-b', '--body-only',
          'only generate HTML body, no HTML headers.'],

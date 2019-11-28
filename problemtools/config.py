@@ -58,7 +58,7 @@ def __update_dict(orig, update):
 
     For all other entries (k, v), orig[k] is set to v.
     """
-    for (key, value) in update.items():
+    for (key, value) in list(update.items()):
         if (key in orig and
             isinstance(value, collections.Mapping) and
             isinstance(orig[key], collections.Mapping)):

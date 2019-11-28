@@ -1,7 +1,9 @@
 """
 Module for dealing with resource limits for problemtools runs.
 """
+from __future__ import division
 
+from past.utils import old_div
 import resource
 
 def check_limit_capabilities(logger):
@@ -27,7 +29,7 @@ def check_limit_capabilities(logger):
     (_, mem_hard) = resource.getrlimit(resource.RLIMIT_AS)
     if mem_hard != resource.RLIM_INFINITY:
         logger.warning("Hard memory rlimit of %d MB, runs involving a higher memory limit may behave incorrectly.  If you experience unexpected issues (in particular run-time errors) this may be the cause."
-                       % (mem_hard/1024/1024))
+                       % (old_div(old_div(mem_hard,1024),1024)))
 
 
 

@@ -2,6 +2,7 @@
 This module contains functionality for reading and using configuration
 of programming languages.
 """
+from builtins import object
 import fnmatch
 import re
 import string
@@ -71,7 +72,7 @@ class Language(object):
                 'Unknown key "%s" specified for language %s'
                 % (unknown, self.lang_id))
 
-        for (key, value) in values.items():
+        for (key, value) in list(values.items()):
             # Check type
             if key == 'priority':
                 if not isinstance(value, int):
@@ -188,7 +189,7 @@ class Languages(object):
         result = None
         src = []
         prio = 1e99
-        for lang in self.languages.values():
+        for lang in list(self.languages.values()):
             lang_src = lang.get_source_files(file_list)
             if (len(lang_src), lang.priority) > (len(src), prio):
                 result = lang
@@ -211,7 +212,7 @@ class Languages(object):
                 'Config file error: content must be a dictionary, but is %s.'
                 % (type(data)))
 
-        for (lang_id, lang_spec) in data.items():
+        for (lang_id, lang_spec) in list(data.items()):
             if not isinstance(lang_id, str):
                 raise LanguageConfigError(
                     'Config file error: language IDs must be strings, but %s is %s.'
@@ -228,7 +229,7 @@ class Languages(object):
                 self.languages[lang_id].update(lang_spec)
 
         priorities = {}
-        for (lang_id, lang) in self.languages.items():
+        for (lang_id, lang) in list(self.languages.items()):
             if lang.priority in priorities:
                 raise LanguageConfigError(
                     'Languages %s and %s both have priority %d.'

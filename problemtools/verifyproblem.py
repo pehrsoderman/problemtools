@@ -1,6 +1,14 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from __future__ import division
+from builtins import next
+from builtins import chr
+from builtins import map
+from builtins import str
+from builtins import range
+from past.utils import old_div
+from builtins import object
 import glob
 import string
 import hashlib
@@ -34,7 +42,7 @@ def is_TLE(status, may_signal_with_usr1=False):
 def is_RTE(status):
     return not os.WIFEXITED(status) or os.WEXITSTATUS(status)
 
-class SubmissionResult:
+class SubmissionResult(object):
     def __init__(self, verdict, score=None, testcase=None, reason=None, additional_info=None):
         self.verdict = verdict
         self.score = score
@@ -77,7 +85,7 @@ class VerifyError(Exception):
     pass
 
 
-class ProblemAspect:
+class ProblemAspect(object):
     max_additional_info = 15
     errors = 0
     warnings = 0
@@ -309,7 +317,7 @@ class TestCaseGroup(ProblemAspect):
 
         # For non-root groups, missing properties are inherited from the parent group
         if parent:
-            for field, parent_value in parent.config.items():
+            for field, parent_value in list(parent.config.items()):
                 if not field in self.config:
                     self.config[field] = parent_value
 
@@ -330,7 +338,7 @@ class TestCaseGroup(ProblemAspect):
                 if key not in self.config:
                     self.config[key] = None
 
-        for field, default in TestCaseGroup._DEFAULT_CONFIG.items():
+        for field, default in list(TestCaseGroup._DEFAULT_CONFIG.items()):
             if field not in self.config:
                 self.config[field] = default
 
@@ -410,8 +418,8 @@ class TestCaseGroup(ProblemAspect):
             elif self.config['on_reject'] == 'break':
                 self.error("'grader_flags: ignore_sample' is specified, but 'on_reject: break' may cause secret data not to be judged")
 
-        for field in self.config.keys():
-            if field not in TestCaseGroup._DEFAULT_CONFIG.keys():
+        for field in list(self.config.keys()):
+            if field not in list(TestCaseGroup._DEFAULT_CONFIG.keys()):
                 self.warning("Unknown key '%s' in '%s'" % (field, os.path.join(self._datadir, 'testdata.yaml')))
 
         if not self._problem.is_scoring:
@@ -465,7 +473,7 @@ class TestCaseGroup(ProblemAspect):
                                 md5.update(buf)
                         filehash = md5.digest()
                         hashes[filehash].append(os.path.relpath(filepath, self._problem.probdir))
-            for _, files in hashes.items():
+            for _, files in list(hashes.items()):
                 if len(files) > 1:
                     self.warning("Identical input files: '%s'" % str(files))
 
@@ -616,7 +624,7 @@ class ProblemConfig(ProblemAspect):
         if 'name' in self._data and not isinstance(self._data['name'], dict):
             self._data['name'] = {'': self._data['name']}
 
-        for field, default in copy.deepcopy(ProblemConfig._OPTIONAL_CONFIG).items():
+        for field, default in list(copy.deepcopy(ProblemConfig._OPTIONAL_CONFIG).items()):
             if not field in self._data:
                 self._data[field] = default
             elif isinstance(default, dict) and isinstance(self._data[field], dict):
@@ -655,8 +663,8 @@ class ProblemConfig(ProblemAspect):
             if not field in self._data:
                 self.error("Mandatory field '%s' not provided" % field)
 
-        for field, value in self._origdata.items():
-            if field not in ProblemConfig._OPTIONAL_CONFIG.keys() and field not in ProblemConfig._MANDATORY_CONFIG:
+        for field, value in list(self._origdata.items()):
+            if field not in list(ProblemConfig._OPTIONAL_CONFIG.keys()) and field not in ProblemConfig._MANDATORY_CONFIG:
                 self.warning("Unknown field '%s' provided in problem.yaml" % field)
             if value is None:
                 self.error("Field '%s' provided in problem.yaml but is empty" % field)
@@ -783,7 +791,7 @@ class ProblemStatement(ProblemAspect):
         for lang in self.languages:
             filename = ('problem.%s.tex' % lang) if lang != '' else 'problem.tex'
             stmt = open(os.path.join(self._problem.probdir, 'problem_statement', filename)).read()
-            patterns = [('\\problemname{(.*)}', 'name'),
+            patterns = [(r'\\problemname{(.*)}', 'name'),
                         (r'^%%\s*plainproblemname:(.*)$', 'name')
                         ]
             for tup in patterns:
@@ -1369,7 +1377,7 @@ class Submissions(ProblemAspect):
                     exact_timelim = max_runtime * time_multiplier
                     max_runtime = '%.3f' % max_runtime
                     timelim = max(1, int(0.5 + exact_timelim))
-                    timelim_margin_lo = max(1, min(int(0.5 + exact_timelim / safety_margin), timelim - 1))
+                    timelim_margin_lo = max(1, min(int(0.5 + old_div(exact_timelim, safety_margin)), timelim - 1))
                     timelim_margin = max(timelim + 1,
                                          int(0.5 + exact_timelim * safety_margin))
                 else:

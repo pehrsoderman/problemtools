@@ -1,6 +1,7 @@
 """
 Implementation of programs provided by source code.
 """
+from builtins import next
 import re
 import os
 import shlex

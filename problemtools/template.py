@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import next
+from builtins import object
 import os
 import re
 import os.path
@@ -15,7 +17,7 @@ def detect_version(problemdir, problemtex):
     return ''  # Current
 
 
-class Template:
+class Template(object):
     def __init__(self, problemdir, language='',
                  title='Problem Title', force_copy_cls=False):
         if not os.path.isdir(problemdir):

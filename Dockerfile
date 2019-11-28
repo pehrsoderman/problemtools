@@ -14,6 +14,7 @@ RUN apt-get update && \
             libgmp10 \
             libgmpxx4ldbl \
             openjdk-8-jdk \
+            python-future \
             python-minimal \
             python-pip \
             python-plastex \
