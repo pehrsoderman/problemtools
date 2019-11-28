@@ -1,38 +1,45 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 from __future__ import division
-from builtins import next
-from builtins import chr
-from builtins import map
-from builtins import str
-from builtins import range
-from past.utils import old_div
-from builtins import object
-import glob
-import string
-import hashlib
+from __future__ import print_function
+
 import collections
+import copy
+import glob
+import hashlib
+import logging
 import os
-import signal
+import random
 import re
 import shutil
-import logging
-import yaml
-import tempfile
+import signal
+import string
 import sys
-import copy
-import random
+import tempfile
+import yaml
 from argparse import ArgumentParser, ArgumentTypeError
-from makebytes import b
-
-from . import problem2pdf
-from . import problem2html
+from builtins import chr
+from builtins import map
+from builtins import next
+from builtins import object
+from builtins import range
+from builtins import str
+from past.utils import old_div
 
 from . import config
 from . import languages
+from . import problem2html
+from . import problem2pdf
 from . import run
 
+#Used for Python2 and Python3 compatbile byte strings
+if sys.version_info < (3,):
+    def makebytes(x):
+        return x
+else:
+    import codecs
+    def makebytes(x):
+        return codecs.latin_1_encode(x)[0]
 
 def is_TLE(status, may_signal_with_usr1=False):
     return (os.WIFSIGNALED(status) and
@@ -906,7 +913,7 @@ class InputFormatValidators(ProblemAspect):
             os.close(fd)
             for (desc, case) in _JUNK_CASES:
                 with open(file_name, "wb") as f:
-                    f.write(b(case))
+                    f.write(makebytes(case))
                 for flags in all_flags:
                     flags = flags.split()
                     for val in self._validators:
@@ -924,7 +931,7 @@ class InputFormatValidators(ProblemAspect):
                         continue
 
                     with open(file_name, "wb") as f:
-                        f.write(b(modifier(infile)))
+                        f.write(makebytes(modifier(infile)))
 
                     for flags in all_flags:
                         flags = flags.split()
@@ -1097,7 +1104,7 @@ class OutputValidators(ProblemAspect):
             os.close(fd)
             for (desc, case) in _JUNK_CASES:
                 with open(file_name, "wb") as f:
-                    f.write(b(case))
+                    f.write(makebytes(case))
                 rejected = False
                 for testcase in self._problem.testdata.get_all_testcases():
                     result = self.validate(testcase, file_name)
